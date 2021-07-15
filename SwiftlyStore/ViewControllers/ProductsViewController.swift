@@ -11,7 +11,6 @@ import Combine
 class ProductsViewController: UIViewController {
 
     var viewModel: ProductsViewModel?
-    var dataSource: UICollectionViewDiffableDataSource<Section, ProductViewModel>!
     @IBOutlet var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -42,7 +41,6 @@ class ProductsViewController: UIViewController {
 extension ProductsViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let viewModel = self.viewModel, let product = viewModel.productViewModelAt(index: indexPath.item) {
-            //            let multiplier = (self.collectionView.bounds.size.width - 16) / CGFloat(self.viewModel?.canvasUnit ?? 1)
             return CGSize(width: product.width, height: product.height)
         }
         else {

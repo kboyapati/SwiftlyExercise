@@ -13,7 +13,9 @@ extension UIImageView {
             URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
                 guard let data = data else {
                     errorHandler(error)
-                    self?.image = placeholderImage
+                    DispatchQueue.main.async {
+                        self?.image = placeholderImage
+                    }
                     return
                 }
                 DispatchQueue.main.async {
@@ -32,5 +34,6 @@ extension UIImageView {
             errorHandler(NetworkError.invalidUrl)
             self.image = placeholderImage
         }
+            
     }
 }
