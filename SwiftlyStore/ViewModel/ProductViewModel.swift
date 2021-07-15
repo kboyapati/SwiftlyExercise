@@ -26,7 +26,13 @@ class ProductViewModel {
     }
     
     var fontSize: CGFloat {
-        width < 100 ? 12 : 17
+        if width < 100 {
+            // if the cell width is less then 100 then there should be small font size otherwise for really small tile the bigger font size won't looks good
+            return 12.0
+        }
+        else {
+            return 17.0
+        }
     }
     
     var origionalPrice: NSAttributedString {
@@ -53,8 +59,8 @@ class ProductViewModel {
         return CGSize(width: width, height: height)
     }
     
-    var url: String {
-        return self.product.imageURL ?? ""
+    var url: URL? {
+        return URL(string: self.product.imageURL ?? "")
     }
 }
 

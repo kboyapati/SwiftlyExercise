@@ -12,15 +12,21 @@ enum Section {
     case products
 }
 
-class ProductsViewModel: ObservableObject {
+class ProductsViewModel {
     
     var viewWidth: CGFloat
     private var managerSpecial: ManagerSpecial?
     private var products: [ProductViewModel]?
     var refreshHandler: (([ProductViewModel])->Void)?
+    var errorHandler: ((Error?)->Void)?
     
     var canvasUnit: Int {
-        return self.managerSpecial?.canvasUnit ?? 0
+        if self.managerSpecial?.canvasUnit != nil {
+            return self.managerSpecial!.canvasUnit!
+        }
+        else {
+            return 1
+        }
     }
     
     var items: Int {
@@ -48,7 +54,7 @@ class ProductsViewModel: ObservableObject {
                 self.products = info.managerSpecials?.compactMap({ ProductViewModel(product: $0, multiplier: multiplier) })
                 self.refreshHandler?(self.products ?? [ProductViewModel]())
             case .failure(let error):
-                print(error.localizedDescription)
+                self.errorHandler?(error)
             }
         }
     }

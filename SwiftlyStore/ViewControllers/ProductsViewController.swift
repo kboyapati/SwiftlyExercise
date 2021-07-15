@@ -12,7 +12,7 @@ class ProductsViewController: UIViewController {
 
     var viewModel: ProductsViewModel?
     var dataSource: UICollectionViewDiffableDataSource<Section, ProductViewModel>!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,9 @@ class ProductsViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
+        }
+        self.viewModel?.errorHandler = { [weak self] error in
+            self?.presentAlert(title: "Error", message: error?.localizedDescription ?? "", actions: UIAlertAction(title: "Ok", style: .default, handler: nil))
         }
     }
 }
@@ -56,7 +59,7 @@ extension ProductsViewController: UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProductCell.self), for: indexPath) as! ProductCell
         cell.productViewModel = self.viewModel?.productViewModelAt(index: indexPath.item)
         return cell
     }

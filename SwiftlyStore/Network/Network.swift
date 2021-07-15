@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum NetworkError: String, Error {
+    case noImage = "Unable to create image from data"
+    case invalidUrl = "Invalid URL"
+}
+
 class Network {
     class func request<T: Codable>(endPoint: EndPoint, completionHandler: @escaping (Result<T, Error>) -> Void) {
         
@@ -21,7 +26,6 @@ class Network {
                     catch {
                         completionHandler(.failure(error))
                     }
-                    
                 }
                 else {
                     completionHandler(.failure(error!))

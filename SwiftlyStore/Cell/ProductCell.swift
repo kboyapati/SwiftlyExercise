@@ -8,11 +8,11 @@
 import UIKit
 
 class ProductCell: UICollectionViewCell {
-    @IBOutlet weak var lblProductName: UILabel!
-    @IBOutlet weak var lblDiscountedPrice: UILabel!
-    @IBOutlet weak var lblPrice: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet var lblProductName: UILabel!
+    @IBOutlet var lblDiscountedPrice: UILabel!
+    @IBOutlet var lblPrice: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var containerView: UIView!
     var productViewModel: ProductViewModel? {
         didSet {
             configure()
@@ -27,8 +27,11 @@ class ProductCell: UICollectionViewCell {
         lblProductName.text = viewModel.productName
         lblDiscountedPrice.attributedText = viewModel.origionalPrice
         lblPrice.text = viewModel.price
-        if let url = URL(string: productViewModel?.url ?? "") {
-            self.imageView.load(url: url)
+        
+        self.imageView.load(url: viewModel.url, placeholderImage: #imageLiteral(resourceName: "J")) { image in
+            // we can do caching of images here
+        } errorHandler: { _ in
+            // log error on Firebase or any other server
         }
     }
 }
